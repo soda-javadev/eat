@@ -4,9 +4,9 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
-        logicalFilePath="changelog.xml">
+>
 
 
-<!--    <include file="quartz/quartz_init.xml" relativeToChangelogFile="true"/>-->
+    <!--    <include file="quartz/quartz_init.xml" relativeToChangelogFile="true"/>-->
 
 </databaseChangeLog>

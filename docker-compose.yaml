@@ -1,10 +1,20 @@
 version: '3'
 services:
+  app:
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    container_name: eat
+    image: eat-app
+    build: .
+    ports:
+      - "8080:8080"
   postgres:
     container_name: postgres
     image: postgres:17-alpine
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - ./init-sql:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
