@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=eat
+    username: eat
+    password: eat
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS eat;
+  liquibase:
+    change-log: classpath:/db/changelog/changelog.xml
+    default-schema: eat
