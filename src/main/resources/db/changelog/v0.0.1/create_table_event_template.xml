@@ -33,12 +33,8 @@
             <column name="type" type="varchar(100)" remarks="type of daily, weekly, monthly, one time">
                 <constraints nullable="false"/>
             </column>
-            <column name="minute" type="int" remarks="minutes when event occurs">
-                <constraints nullable="false"/>
-            </column>
-            <column name="hour" type="int" remarks="hour when event occurs">
-                <constraints nullable="false"/>
-            </column>
+            <column name="minute" type="int" remarks="minutes when event occurs"/>
+            <column name="hour" type="int" remarks="hour when event occurs"/>
             <column name="day_of_week" type="varchar(10)" remarks="day of week when event occurs"/>
             <column name="day_of_month" type="int" remarks="day of month when event occurs"/>
             <column name="active" type="boolean" remarks="create new event by template"/>
