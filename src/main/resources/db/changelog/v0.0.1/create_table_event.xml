@@ -33,7 +33,14 @@
             <column name="successfully" type="boolean" defaultValue="false" remarks="event completion status">
                 <constraints nullable="false"/>
             </column>
+            <column name="event_template_id" type="bigint" remarks="event_template_id mapping">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+        <addForeignKeyConstraint baseTableName="event" baseColumnNames="event_template_id"
+                                 constraintName="event_event_template_id_fk"
+                                 referencedTableName="event_template"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
 </databaseChangeLog>
