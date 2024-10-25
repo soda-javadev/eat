@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <changeSet id="create_table_event_template_seq" author="mn">
+    <preConditions>
+        <not>
+            <sequenceExists sequenceName="event_template_seq"/>
+        </not>
+    </preConditions>
+        <createSequence sequenceName="event_template_seq"/>
+    </changeSet>
+
+    <changeSet id="create_table_event_template" author="mn">
+        <preConditions>
+            <not>
+                <tableExists tableName="event_template"/>
+            </not>
+        </preConditions>
+        <createTable tableName="event_template">
+            <column name="id" type="bigint" defaultValueSequenceNext="event_template_seq" remarks="event template id">
+                <constraints primaryKey="true" primaryKeyName="event_template_pk"/>
+            </column>
+            <column name="name" type="varchar(1000)" remarks="name of event">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="type" type="varchar(100)" remarks="type of daily, weekly, monthly, one time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="minute" type="int" remarks="minutes when event occurs"/>
+            <column name="hour" type="int" remarks="hour when event occurs"/>
+            <column name="day_of_week" type="varchar(10)" remarks="day of week when event occurs"/>
+            <column name="day_of_month" type="int" remarks="day of month when event occurs"/>
+            <column name="active" type="boolean" remarks="create new event by template"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
