@@ -6,5 +6,6 @@
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
         <include file="create_table_event_template.xml" relativeToChangelogFile="true"/>
+        <include file="create_table_event.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <changeSet id="create_table_event_seq" author="sd">
+        <preConditions>
+            <not>
+                <sequenceExists sequenceName="event_seq"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="event_seq"/>
+    </changeSet>
+
+    <changeSet id="create_table_event" author="sd">
+        <preConditions>
+            <not>
+                <tableExists tableName="event"/>
+            </not>
+        </preConditions>
+        <createTable tableName="event">
+            <column name="id" type="bigint" defaultValueSequenceNext="event_seq" remarks="event id">
+                <constraints primaryKey="true" primaryKeyName="event_pk"/>
+            </column>
+            <column name="event_name" type="varchar(1000)" remarks="name of event">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_time" type="timestamp" remarks="event start time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="successfully" type="boolean" defaultValue="false" remarks="event completion status">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_template_id" type="bigint" remarks="event_template_id mapping">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="event" baseColumnNames="event_template_id"
+                                 constraintName="event_event_template_id_fk"
+                                 referencedTableName="event_template"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
