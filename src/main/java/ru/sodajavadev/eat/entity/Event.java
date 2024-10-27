@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -14,6 +16,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,5 +42,12 @@ public class Event {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "event_template_id", nullable = false)
     private EventTemplate eventTemplate;
+
+    @ManyToMany
+    @JoinTable(
+            name = "mtm_event_loot",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "loot_id"))
+    private List<Loot> loot = new ArrayList<>();
 
 }

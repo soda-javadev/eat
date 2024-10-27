@@ -37,7 +37,8 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="event" baseColumnNames="event_template_id"
+        <addForeignKeyConstraint baseTableName="event"
+                                 baseColumnNames="event_template_id"
                                  constraintName="event_event_template_id_fk"
                                  referencedTableName="event_template"
                                  referencedColumnNames="id"/>
