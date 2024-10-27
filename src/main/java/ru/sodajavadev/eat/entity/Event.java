@@ -29,10 +29,10 @@ public class Event {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "event_name", nullable = false, length = 1000)
+    @Column(name = "name", nullable = false, length = 1000)
     private String eventName;
 
-    @Column(name = "event_time", nullable = false)
+    @Column(name = "time", nullable = false)
     private LocalDateTime eventTime;
 
     @ColumnDefault("false")
