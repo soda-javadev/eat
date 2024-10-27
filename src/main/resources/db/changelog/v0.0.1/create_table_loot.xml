@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <changeSet id="create_table_loot_seq" author="sd">
+        <preConditions>
+            <not>
+                <sequenceExists sequenceName="loot_seq"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="loot_seq"/>
+    </changeSet>
+
+    <changeSet id="create_table_loot" author="sd">
+        <preConditions>
+            <not>
+                <tableExists tableName="loot"/>
+            </not>
+        </preConditions>
+        <createTable tableName="loot">
+            <column name="id" type="bigint" defaultValueSequenceNext="loot_seq" remarks="loot id">
+                <constraints primaryKey="true" primaryKeyName="loot_pk"/>
+            </column>
+            <column name="loot_name" type="varchar(1000)" remarks="name of loot">
+                <constraints nullable="false"/>
+            </column>
+            <column name="loot_cost" type="int" remarks="the cost of the loot">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
