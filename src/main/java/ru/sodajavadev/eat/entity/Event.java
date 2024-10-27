@@ -43,11 +43,19 @@ public class Event {
     @JoinColumn(name = "event_template_id", nullable = false)
     private EventTemplate eventTemplate;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "mtm_event_loot",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "loot_id"))
     private List<Loot> loot = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "mtm_event_guild_member",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "guild_member_id"))
+    private List<GuildMember> guildMembers = new ArrayList<>();
+
 
 }
