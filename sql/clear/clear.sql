@@ -9,3 +9,5 @@ drop table if exists eat.mtm_event_loot cascade;
 drop sequence if exists eat.mtm_event_loot_seq;
 drop table if exists eat.guild_member cascade;
 drop sequence if exists eat.guild_member_seq;
+drop table if exists eat.mtm_event_guild_member cascade;
+drop sequence if exists eat.mtm_event_guild_member_seq;
