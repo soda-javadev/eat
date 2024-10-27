@@ -24,10 +24,10 @@
             <column name="id" type="bigint" defaultValueSequenceNext="event_seq" remarks="event id">
                 <constraints primaryKey="true" primaryKeyName="event_pk"/>
             </column>
-            <column name="event_name" type="varchar(1000)" remarks="name of event">
+            <column name="name" type="varchar(1000)" remarks="name of event">
                 <constraints nullable="false"/>
             </column>
-            <column name="event_time" type="timestamp" remarks="event start time">
+            <column name="time" type="timestamp" remarks="event start time">
                 <constraints nullable="false"/>
             </column>
             <column name="successfully" type="boolean" defaultValue="false" remarks="event completion status">

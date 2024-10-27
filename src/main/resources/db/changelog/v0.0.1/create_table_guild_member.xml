@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <changeSet id="create_table_guild_member_seq" author="sd">
+        <preConditions>
+            <not>
+                <sequenceExists sequenceName="guild_member_seq"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="guild_member_seq"/>
+    </changeSet>
+
+    <changeSet id="create_table_guild_member" author="sd">
+        <preConditions>
+            <not>
+                <tableExists tableName="guild_member"/>
+            </not>
+        </preConditions>
+        <createTable tableName="guild_member">
+            <column name="id" type="bigint" defaultValueSequenceNext="guild_member_seq" remarks="guild_member id">
+                <constraints primaryKey="true" primaryKeyName="guild_member_pk"/>
+            </column>
+            <column name="nickname" type="varchar(1000)" remarks="nickname of guild_member">
+                <constraints nullable="false"/>
+            </column>
+            <column name="server" type="varchar(1000)" remarks="server of guild_member">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+        <addUniqueConstraint tableName="guild_member" columnNames="nickname,server" constraintName="guild_member_nickname_server_uc"/>
+    </changeSet>
+
+</databaseChangeLog>

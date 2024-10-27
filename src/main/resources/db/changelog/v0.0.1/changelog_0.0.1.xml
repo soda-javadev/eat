@@ -9,5 +9,6 @@
         <include file="create_table_event.xml" relativeToChangelogFile="true"/>
         <include file="create_table_loot.xml" relativeToChangelogFile="true"/>
         <include file="create_table_mtm_event_loot.xml" relativeToChangelogFile="true"/>
+        <include file="create_table_guild_member.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
