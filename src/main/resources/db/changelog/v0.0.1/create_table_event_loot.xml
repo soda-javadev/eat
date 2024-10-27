@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <changeSet id="create_table_event_loot_seq" author="sd">
+        <preConditions>
+            <not>
+                <sequenceExists sequenceName="event_loot_seq"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="event_loot_seq"/>
+    </changeSet>
+
+    <changeSet id="create_table_event_loot" author="sd">
+        <preConditions>
+            <not>
+                <tableExists tableName="event_loot"/>
+            </not>
+        </preConditions>
+        <createTable tableName="event_loot">
+            <column name="id" type="bigint" defaultValueSequenceNext="event_loot_seq" remarks="event_loot_id">
+                <constraints primaryKey="true" primaryKeyName="event_loot_pk"/>
+            </column>
+            <column name="event_id" type="bigint" remarks="event_id mapping">
+                <constraints nullable="false" deleteCascade="true"/>
+            </column>
+            <column name="loot_id" type="bigint" remarks="loot_id mapping">
+                <constraints nullable="false" deleteCascade="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="event_loot"
+                                 baseColumnNames="event_id"
+                                 constraintName="event_loot_event_id_fk"
+                                 referencedTableName="event"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="event_loot"
+                                 baseColumnNames="loot_id"
+                                 constraintName="event_loot_loot_id_fk"
+                                 referencedTableName="loot"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
+
