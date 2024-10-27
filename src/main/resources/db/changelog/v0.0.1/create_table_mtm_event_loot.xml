@@ -5,24 +5,24 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <changeSet id="create_table_event_loot_seq" author="sd">
+    <changeSet id="create_table_mtm_event_loot_seq" author="sd">
         <preConditions>
             <not>
-                <sequenceExists sequenceName="event_loot_seq"/>
+                <sequenceExists sequenceName="mtm_event_loot_seq"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="event_loot_seq"/>
+        <createSequence sequenceName="mtm_event_loot_seq"/>
     </changeSet>
 
-    <changeSet id="create_table_event_loot" author="sd">
+    <changeSet id="create_table_mtm_event_loot" author="sd">
         <preConditions>
             <not>
-                <tableExists tableName="event_loot"/>
+                <tableExists tableName="mtm_event_loot"/>
             </not>
         </preConditions>
-        <createTable tableName="event_loot">
-            <column name="id" type="bigint" defaultValueSequenceNext="event_loot_seq" remarks="event_loot_id">
-                <constraints primaryKey="true" primaryKeyName="event_loot_pk"/>
+        <createTable tableName="mtm_event_loot">
+            <column name="id" type="bigint" defaultValueSequenceNext="mtm_event_loot_seq" remarks="mtm_event_loot_id">
+                <constraints primaryKey="true" primaryKeyName="mtm_event_loot_id_pk"/>
             </column>
             <column name="event_id" type="bigint" remarks="event_id mapping">
                 <constraints nullable="false" deleteCascade="true"/>
@@ -31,12 +31,12 @@
                 <constraints nullable="false" deleteCascade="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="event_loot"
+        <addForeignKeyConstraint baseTableName="mtm_event_loot"
                                  baseColumnNames="event_id"
                                  constraintName="event_loot_event_id_fk"
                                  referencedTableName="event"
                                  referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="event_loot"
+        <addForeignKeyConstraint baseTableName="mtm_event_loot"
                                  baseColumnNames="loot_id"
                                  constraintName="event_loot_loot_id_fk"
                                  referencedTableName="loot"

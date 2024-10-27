@@ -5,5 +5,5 @@ drop table eat.event cascade;
 drop sequence eat.event_seq;
 drop table eat.loot cascade;
 drop sequence eat.loot_seq;
-drop table eat.event_loot cascade;
-drop sequence eat.event_loot_seq;
+drop table eat.mtm_event_loot cascade;
+drop sequence eat.mtm_event_loot_seq;
