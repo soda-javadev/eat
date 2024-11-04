@@ -24,6 +24,7 @@ import java.util.List;
 @Entity
 @Table(name = "event", schema = "eat")
 public class Event {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -56,6 +57,4 @@ public class Event {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "guild_member_id"))
     private List<GuildMember> guildMembers = new ArrayList<>();
-
-
 }

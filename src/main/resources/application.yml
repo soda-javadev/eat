@@ -15,3 +15,8 @@ spring:
   liquibase:
     changeLog: classpath:db/changelog/changelog.xml
     default-schema: eat
+
+server:
+  error:
+    include-stacktrace: never
+
