@@ -3,9 +3,9 @@ package ru.sodajavadev.eat.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +23,7 @@ import static ru.sodajavadev.eat.controller.EventTemplateController.UI_V_1_EVENT
 @RequiredArgsConstructor
 @RequestMapping(value = UI_V_1_EVENT_TEMPLATE)
 @RestController
+@Validated
 public class EventTemplateController {
 
     protected static final String UI_V_1_EVENT_TEMPLATE = "/ui/v1/event-template";
@@ -43,23 +44,23 @@ public class EventTemplateController {
         return service.findById(id);
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<EventTemplateDto> findAll(@RequestParam(required = false) Boolean onlyActive) {
 
         return service.findAll(onlyActive);
     }
 
-    @PutMapping()
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public EventTemplateDto updateEventTemplateDto(@Valid @RequestBody EventTemplateDto eventTemplateDto) {
 
         return service.updateEventTemplateDto(eventTemplateDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(@RequestParam Long id) {
 
         service.deleteById(id);
     }

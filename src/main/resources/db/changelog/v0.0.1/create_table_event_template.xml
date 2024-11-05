@@ -40,8 +40,6 @@
             <column name="active" type="boolean" defaultValue="false" remarks="create new event by template">
                 <constraints nullable="false"/>
             </column>
-
-
         </createTable>
     </changeSet>
 

@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 
 @Slf4j
@@ -22,13 +20,11 @@ public class EventTemplateExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public EventTemplateErrorDto handleEventTemplateException(ConstraintViolationException e) {
 
-        final List<ErrorDto> errorDtos = e.getConstraintViolations().stream()
+        return new EventTemplateErrorDto(e.getConstraintViolations().stream()
                 .map(errorDto -> new ErrorDto(
                         errorDto.getPropertyPath().toString(),
-                        errorDto.getMessage())
-                )
-                .collect(toList());
-        return new EventTemplateErrorDto(errorDtos);
+                        errorDto.getMessage()))
+                .collect(toList()));
     }
 
     @ResponseBody
@@ -36,14 +32,13 @@ public class EventTemplateExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public EventTemplateErrorDto onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
-        final List<ErrorDto> errorDtos = e.getBindingResult()
+        return new EventTemplateErrorDto(e.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(errorDto -> new ErrorDto(errorDto.getField(),
-                        errorDto.getDefaultMessage())
-                )
-                .collect(toList());
-        return new EventTemplateErrorDto(errorDtos);
+                .map(errorDto -> new ErrorDto(
+                        errorDto.getField(),
+                        errorDto.getDefaultMessage()))
+                .collect(toList()));
     }
 
     @ResponseBody
@@ -53,9 +48,6 @@ public class EventTemplateExceptionHandler {
 
         log.error(e.getMessage());
 
-        return ErrorDto.builder()
-                .message(e.getMessage())
-                .field(e.getField())
-                .build();
+        return new ErrorDto(e.getField(), e.getMessage());
     }
 }

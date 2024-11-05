@@ -29,11 +29,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class EventTemplateServiceTest {
 
-    protected static final Long ID = 1L;
-
-    protected static final String INCORRECT_EVENT_TEMPLATE_ID = "События с id - 1 не существует";
-
-    protected static final String FIELD_ID = "id";
+    private static final Long ID = 1L;
+    private static final String INCORRECT_EVENT_TEMPLATE_ID = "События с id - 1 не существует";
+    private static final String FIELD_ID = "id";
 
     @Mock
     private EventTemplateRepository repositoryMock;
@@ -251,7 +249,7 @@ class EventTemplateServiceTest {
     }
 
 
-    EventTemplateDto createEventTemplateDtoTest() {
+    private EventTemplateDto createEventTemplateDtoTest() {
 
         return EventTemplateDto.builder()
                 .templateName("test")
@@ -263,7 +261,7 @@ class EventTemplateServiceTest {
                 .build();
     }
 
-    EventTemplate createEventTemplateTest() {
+    private EventTemplate createEventTemplateTest() {
 
         return EventTemplate.builder()
                 .templateName("test")

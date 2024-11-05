@@ -21,23 +21,14 @@ import static java.lang.String.format;
 public class EventTemplateService {
 
     protected static final String INCORRECT_EVENT_TEMPLATE_ID = "События с id - %d не существует";
-
     protected static final String ID = "id";
-
     protected static final String DAY_OF_WEEK = "dayOfWeek";
-
     protected static final String INCORRECT_DAY_WEEK = "При указании типа события - Еженедельно, день недели должен быть задан";
-
     protected static final String DAY_OF_MONTH = "dayOfMonth";
-
     protected static final String INCORRECT_DAY_MONTH = "При указании типа события - Ежемесячно, день месяца должен быть задан";
-
     protected static final String INCORRECT_EVENT_TEMPLATE_NAME = "Такое имя шаблона события уже существует, задайте новое";
-
     protected static final String EVENT_TEMPLATE_NAME = "eventTemplateName";
-
     protected static final String INCORRECT_EVENT_TEMPLATE_TYPE = "Типа события %s должен быть задан";
-
     protected static final String TYPE = "type";
 
     private final EventTemplateRepository repository;
@@ -90,7 +81,6 @@ public class EventTemplateService {
                 .orElseThrow(() -> new EventTemplateBaseException(format(INCORRECT_EVENT_TEMPLATE_ID, eventTemplateDto.getId()), ID));
     }
 
-
     @SneakyThrows
     @Transactional
     public void deleteById(Long id) {
@@ -116,7 +106,7 @@ public class EventTemplateService {
 
     protected void validateEventTemplateName(EventTemplateDto eventTemplateDto) {
 
-        if (repository.checkEventTemplateName(eventTemplateDto.getTemplateName())) {
+        if (repository.isEventTemplateNameExists(eventTemplateDto.getTemplateName())) {
 
             throw new EventTemplateBaseException(INCORRECT_EVENT_TEMPLATE_NAME, EVENT_TEMPLATE_NAME);
         }

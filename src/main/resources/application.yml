@@ -4,6 +4,7 @@ spring:
     hibernate:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
 
   datasource:
     driver-class-name: org.postgresql.Driver

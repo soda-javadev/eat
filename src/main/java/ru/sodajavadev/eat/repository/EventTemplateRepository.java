@@ -26,6 +26,6 @@ public interface EventTemplateRepository extends JpaRepository<EventTemplate, Lo
             WHERE et.template_name = :eventTemplateName
             """,
             nativeQuery = true)
-    boolean checkEventTemplateName(String eventTemplateName);
+    boolean isEventTemplateNameExists(String eventTemplateName);
 
 }

@@ -1,8 +1,8 @@
 package ru.sodajavadev.eat.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,20 +20,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @IT
 @Sql(scripts = "/sql/event-template.sql")
-@RequiredArgsConstructor
 class EventTemplateControllerTest {
 
-    protected static final String UI_V_1_EVENT_TEMPLATE = EventTemplateController.UI_V_1_EVENT_TEMPLATE;
+    private static final String UI_V_1_EVENT_TEMPLATE = EventTemplateController.UI_V_1_EVENT_TEMPLATE;
+    private static final String DELETE_URL_TEMPLATE = UI_V_1_EVENT_TEMPLATE;
+    private static final String URL_TEMPLATE_GET_ALL = UI_V_1_EVENT_TEMPLATE + "/all";
 
-    protected static final String DELETE_URL_TEMPLATE = UI_V_1_EVENT_TEMPLATE + "/{id}";
+    @Autowired
+    private MockMvc mockMvc;
 
-    protected static final String URL_TEMPLATE_GET_ALL = UI_V_1_EVENT_TEMPLATE + "/get-all";
+    @Autowired
+    private EventTemplateRepository repository;
 
-    private final MockMvc mockMvc;
-
-    private final EventTemplateRepository repository;
-
-    private final ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     void createEventTemplate() throws Exception {
@@ -182,14 +182,14 @@ class EventTemplateControllerTest {
     @Test
     void deleteById() throws Exception {
 
-        mockMvc.perform(delete(DELETE_URL_TEMPLATE, 1L))
+        mockMvc.perform(delete(DELETE_URL_TEMPLATE)
+                        .param("id", "1"))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").doesNotExist());
     }
 
-
-    EventTemplateDto createEventTemplateDtoTest() {
+    private EventTemplateDto createEventTemplateDtoTest() {
 
         return EventTemplateDto.builder()
                 .id(1L)
@@ -201,7 +201,8 @@ class EventTemplateControllerTest {
                 .active(true)
                 .build();
     }
-    EventTemplateDto createEventTemplateDtoTestForCreate() {
+
+    private EventTemplateDto createEventTemplateDtoTestForCreate() {
 
         return EventTemplateDto.builder()
                 .templateName("test")
