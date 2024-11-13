@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.sodajavadev.eat.entity.EventTemplate;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 @Repository
@@ -27,4 +28,16 @@ public interface EventTemplateRepository extends JpaRepository<EventTemplate, Lo
             """,
             nativeQuery = true)
     boolean isEventTemplateNameExists(String eventTemplateName);
+
+    @Modifying
+    @Query("""
+            SELECT et
+            FROM EventTemplate et
+            WHERE et.minute = :minute
+              AND et.hour = :hour
+              AND (et.type = 'DAILY' OR (et.type = 'WEEKLY' AND et.dayOfWeek = :dayOfWeek) OR
+                   (et.type = 'MONTHLY' AND et.dayOfMonth = :dayOfMonth))
+              AND et.active IS TRUE
+            """)
+    List<EventTemplate> findAll(Integer minute, Integer hour, DayOfWeek dayOfWeek, Integer dayOfMonth);
 }
