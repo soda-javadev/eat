@@ -6,11 +6,11 @@
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
     <changeSet id="create_table_event_template_seq" author="mn">
-    <preConditions>
-        <not>
-            <sequenceExists sequenceName="event_template_seq"/>
-        </not>
-    </preConditions>
+        <preConditions>
+            <not>
+                <sequenceExists sequenceName="event_template_seq"/>
+            </not>
+        </preConditions>
         <createSequence sequenceName="event_template_seq"/>
     </changeSet>
 
@@ -37,7 +37,9 @@
             <column name="hour" type="int" remarks="hour when event occurs"/>
             <column name="day_of_week" type="varchar(10)" remarks="day of week when event occurs"/>
             <column name="day_of_month" type="int" remarks="day of month when event occurs"/>
-            <column name="active" type="boolean" remarks="create new event by template"/>
+            <column name="active" type="boolean" defaultValue="false" remarks="create new event by template">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
