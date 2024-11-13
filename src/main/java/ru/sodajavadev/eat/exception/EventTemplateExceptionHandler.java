@@ -19,7 +19,6 @@ public class EventTemplateExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public EventTemplateErrorDto handleEventTemplateException(ConstraintViolationException e) {
-
         return new EventTemplateErrorDto(e.getConstraintViolations().stream()
                 .map(errorDto -> new ErrorDto(
                         errorDto.getPropertyPath().toString(),
@@ -31,7 +30,6 @@ public class EventTemplateExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public EventTemplateErrorDto onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-
         return new EventTemplateErrorDto(e.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -45,7 +43,6 @@ public class EventTemplateExceptionHandler {
     @ExceptionHandler(EventTemplateBaseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDto valid(EventTemplateBaseException e) {
-
         log.error(e.getMessage());
 
         return new ErrorDto(e.getField(), e.getMessage());

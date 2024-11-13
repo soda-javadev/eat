@@ -32,13 +32,11 @@ public class EventTemplateService {
     protected static final String TYPE = "type";
 
     private final EventTemplateRepository repository;
-
     private final EventTemplateMapper mapper;
 
     @SneakyThrows
     @Transactional
     public EventTemplateDto createEventTemplate(EventTemplateDto eventTemplateDto) {
-
 //        TODO добавить EventTemplateType - ONCE, создать метод для создания EventTemplate и Event сразу по этому типу
 
         validateEventTemplateType(eventTemplateDto);
@@ -51,7 +49,6 @@ public class EventTemplateService {
     @SneakyThrows
     @Transactional
     public EventTemplateDto findById(Long id) {
-
         return repository.findById(id)
                 .map(mapper::toDto)
                 .orElseThrow(() -> new EventTemplateBaseException(format(INCORRECT_EVENT_TEMPLATE_ID, id), ID));
@@ -59,9 +56,7 @@ public class EventTemplateService {
 
     @Transactional
     public List<EventTemplateDto> findAll(Boolean onlyActive) {
-
         if (onlyActive != null && !onlyActive) {
-
             return mapper.toListDto(repository.findAll());
         }
 
@@ -71,7 +66,6 @@ public class EventTemplateService {
     @SneakyThrows
     @Transactional
     public EventTemplateDto updateEventTemplateDto(EventTemplateDto eventTemplateDto) {
-
         validateEventTemplateType(eventTemplateDto);
 
         return repository.findById(eventTemplateDto.getId())
@@ -84,50 +78,35 @@ public class EventTemplateService {
     @SneakyThrows
     @Transactional
     public void deleteById(Long id) {
-
         if (repository.deleteByEventTemplateId(id) == 0) {
-
             throw new EventTemplateBaseException(format(INCORRECT_EVENT_TEMPLATE_ID, id), ID);
         }
     }
 
     protected void validateEventTemplateType(EventTemplateDto eventTemplateDto) {
-
         if (EventTemplateType.WEEKLY == (eventTemplateDto.getType()) && eventTemplateDto.getDayOfWeek() == null) {
-
             throw new EventTemplateBaseException(INCORRECT_DAY_WEEK, DAY_OF_WEEK);
         }
 
         if (EventTemplateType.MONTHLY == (eventTemplateDto.getType()) && eventTemplateDto.getDayOfMonth() == null) {
-
             throw new EventTemplateBaseException(INCORRECT_DAY_MONTH, DAY_OF_MONTH);
         }
     }
 
     protected void validateEventTemplateName(EventTemplateDto eventTemplateDto) {
-
         if (repository.isEventTemplateNameExists(eventTemplateDto.getTemplateName())) {
-
             throw new EventTemplateBaseException(INCORRECT_EVENT_TEMPLATE_NAME, EVENT_TEMPLATE_NAME);
         }
     }
 
     protected Function<EventTemplate, EventTemplate> mapEventTemplateFunctionByType(EventTemplateDto eventTemplateDto) {
-
         if (EventTemplateType.DAILY == eventTemplateDto.getType()) {
-
             return eventTemplate -> mapper.mapToDaily(eventTemplateDto, eventTemplate);
-
         } else if (EventTemplateType.WEEKLY == eventTemplateDto.getType()) {
-
             return eventTemplate -> mapper.mapToWeekly(eventTemplateDto, eventTemplate);
-
         } else if (EventTemplateType.MONTHLY == eventTemplateDto.getType()) {
-
             return eventTemplate -> mapper.mapToMonthly(eventTemplateDto, eventTemplate);
-
         } else {
-
             throw new EventTemplateBaseException(format(INCORRECT_EVENT_TEMPLATE_TYPE, eventTemplateDto.getType()), TYPE);
         }
     }

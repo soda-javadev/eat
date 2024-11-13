@@ -1,9 +1,7 @@
 package ru.sodajavadev.eat.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
 import ru.sodajavadev.eat.entity.EventTemplateType;
@@ -16,11 +14,8 @@ import java.time.DayOfWeek;
 public class EventTemplateDto {
 
     private Long id;
-
     private String templateName;
-
     private String eventName;
-
     private EventTemplateType type;
 
     @NotNull
@@ -41,5 +36,4 @@ public class EventTemplateDto {
 
     @NotNull
     private Boolean active;
-
 }

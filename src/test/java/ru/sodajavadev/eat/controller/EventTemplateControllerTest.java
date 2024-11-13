@@ -3,13 +3,14 @@ package ru.sodajavadev.eat.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.sodajavadev.eat.annotation.IT;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sodajavadev.eat.dto.EventTemplateDto;
 import ru.sodajavadev.eat.entity.EventTemplateType;
-import ru.sodajavadev.eat.repository.EventTemplateRepository;
 
 import java.time.DayOfWeek;
 
@@ -18,26 +19,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@IT
+import static ru.sodajavadev.eat.controller.EventTemplateController.UI_V_1_EVENT_TEMPLATE;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional
 @Sql(scripts = "/sql/event-template.sql")
 class EventTemplateControllerTest {
 
-    private static final String UI_V_1_EVENT_TEMPLATE = EventTemplateController.UI_V_1_EVENT_TEMPLATE;
-    private static final String DELETE_URL_TEMPLATE = UI_V_1_EVENT_TEMPLATE;
     private static final String URL_TEMPLATE_GET_ALL = UI_V_1_EVENT_TEMPLATE + "/all";
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private EventTemplateRepository repository;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
     @Test
     void createEventTemplate() throws Exception {
-
         EventTemplateDto expected = createEventTemplateDtoTestForCreate();
 
         mockMvc.perform(post(UI_V_1_EVENT_TEMPLATE)
@@ -58,7 +57,6 @@ class EventTemplateControllerTest {
 
     @Test
     void findById() throws Exception {
-
         mockMvc.perform(get(UI_V_1_EVENT_TEMPLATE)
                         .param("id", "1"))
                 .andDo(print())
@@ -77,7 +75,6 @@ class EventTemplateControllerTest {
 
     @Test
     void findAllOnlyActiveIsNull() throws Exception {
-
         mockMvc.perform(get(URL_TEMPLATE_GET_ALL))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -87,7 +84,6 @@ class EventTemplateControllerTest {
 
     @Test
     void findAllOnlyActiveIsTrue() throws Exception {
-
         mockMvc.perform(get(URL_TEMPLATE_GET_ALL)
                         .param("onlyActive", "true"))
                 .andDo(print())
@@ -98,7 +94,6 @@ class EventTemplateControllerTest {
 
     @Test
     void findAllOnlyActiveIsFalse() throws Exception {
-
         mockMvc.perform(get(URL_TEMPLATE_GET_ALL)
                         .param("onlyActive", "false"))
                 .andDo(print())
@@ -109,7 +104,6 @@ class EventTemplateControllerTest {
 
     @Test
     void updateEventTemplateDtoWithDailyType() throws Exception {
-
         var expected = createEventTemplateDtoTest();
 
         mockMvc.perform(put(UI_V_1_EVENT_TEMPLATE)
@@ -131,7 +125,6 @@ class EventTemplateControllerTest {
 
     @Test
     void updateEventTemplateDtoWithWeeklyType() throws Exception {
-
         var expected = createEventTemplateDtoTest();
         expected.setId(5L);
         expected.setType(EventTemplateType.WEEKLY);
@@ -156,7 +149,6 @@ class EventTemplateControllerTest {
 
     @Test
     void updateEventTemplateDtoWithMonthlyType() throws Exception {
-
         var expected = createEventTemplateDtoTest();
         expected.setId(6L);
         expected.setType(EventTemplateType.MONTHLY);
@@ -181,8 +173,7 @@ class EventTemplateControllerTest {
 
     @Test
     void deleteById() throws Exception {
-
-        mockMvc.perform(delete(DELETE_URL_TEMPLATE)
+        mockMvc.perform(delete(UI_V_1_EVENT_TEMPLATE)
                         .param("id", "1"))
                 .andDo(print())
                 .andExpect(status().isNoContent())
@@ -190,7 +181,6 @@ class EventTemplateControllerTest {
     }
 
     private EventTemplateDto createEventTemplateDtoTest() {
-
         return EventTemplateDto.builder()
                 .id(1L)
                 .templateName("test")
@@ -203,7 +193,6 @@ class EventTemplateControllerTest {
     }
 
     private EventTemplateDto createEventTemplateDtoTestForCreate() {
-
         return EventTemplateDto.builder()
                 .templateName("test")
                 .eventName("test")

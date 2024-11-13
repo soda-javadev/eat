@@ -3,14 +3,9 @@ package ru.sodajavadev.eat.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.NullSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 import org.mapstruct.factory.Mappers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.sodajavadev.eat.dto.EventTemplateDto;
 import ru.sodajavadev.eat.entity.EventTemplate;
@@ -44,7 +39,6 @@ class EventTemplateServiceTest {
 
     @Test
     void createEventTemplate() {
-
         EventTemplate expectedResult = createEventTemplateTest();
 
         when(repositoryMock.save(any(EventTemplate.class)))
@@ -63,7 +57,6 @@ class EventTemplateServiceTest {
             "MONTHLY, , 1"
     })
     void validateEventTemplateTypeWeeklyOrMonthly(EventTemplateType type, DayOfWeek dayOfWeek, Integer dayOfMonth) {
-
         EventTemplateDto eventTemplateDtoTest = createEventTemplateDtoTest();
         eventTemplateDtoTest.setType(type);
         eventTemplateDtoTest.setDayOfWeek(dayOfWeek);
@@ -78,7 +71,6 @@ class EventTemplateServiceTest {
             "MONTHLY, MONDAY, "
     })
     void validateEventTemplateTypeWeeklyOrMonthlyWithInvalidDay(EventTemplateType type, DayOfWeek dayOfWeek, Integer dayOfMonth) {
-
         EventTemplateDto eventTemplateDtoTest = createEventTemplateDtoTest();
         eventTemplateDtoTest.setType(type);
         eventTemplateDtoTest.setDayOfWeek(dayOfWeek);
@@ -87,13 +79,11 @@ class EventTemplateServiceTest {
         var actualError = assertThrows(EventTemplateBaseException.class, () -> service.validateEventTemplateType(eventTemplateDtoTest));
 
         if (type.equals(EventTemplateType.WEEKLY)) {
-
             assertEquals("При указании типа события - Еженедельно, день недели должен быть задан", actualError.getMessage());
             assertEquals("dayOfWeek", actualError.getField());
         }
 
         if (type.equals(EventTemplateType.MONTHLY)) {
-
             assertEquals("При указании типа события - Ежемесячно, день месяца должен быть задан", actualError.getMessage());
             assertEquals("dayOfMonth", actualError.getField());
         }
@@ -101,7 +91,6 @@ class EventTemplateServiceTest {
 
     @Test
     void findById() {
-
         EventTemplate expectedResult = createEventTemplateTest();
 
         when(repositoryMock.findById(ID))
@@ -116,7 +105,6 @@ class EventTemplateServiceTest {
 
     @Test
     void findByIdWhenEntityDoesNotExist() {
-
         when(repositoryMock.findById(ID))
                 .thenReturn(Optional.empty());
 
@@ -130,7 +118,6 @@ class EventTemplateServiceTest {
     @ValueSource(booleans = {true})
     @NullSource
     void findAllWhenIsActiveTrueOrNull(Boolean isActive) {
-
         List<EventTemplate> expectedResult = List.of(createEventTemplateTest(), createEventTemplateTest());
 
         when(repositoryMock.findAllByActiveIsTrue())
@@ -145,7 +132,6 @@ class EventTemplateServiceTest {
 
     @Test
     void findAllWhenIsActiveFalse() {
-
         List<EventTemplate> expectedResult = List.of(createEventTemplateTest(), createEventTemplateTest());
 
         when(repositoryMock.findAll())
@@ -160,7 +146,6 @@ class EventTemplateServiceTest {
 
     @Test
     void updateEventTemplateDto() {
-
         EventTemplate expectedResult = createEventTemplateTest();
 
         EventTemplateDto dto = createEventTemplateDtoTest();
@@ -180,7 +165,6 @@ class EventTemplateServiceTest {
 
     @Test
     void updateEventTemplateDtoWithIncorrectId() {
-
         EventTemplateDto dto = createEventTemplateDtoTest();
         dto.setId(1L);
 
@@ -200,10 +184,8 @@ class EventTemplateServiceTest {
             "MONTHLY"
     })
     void mapEventTemplateFunctionByTypeWithCorrectEventTemplateType(EventTemplateType type) {
-
         EventTemplateDto eventTemplateDtoTest = createEventTemplateDtoTest();
         eventTemplateDtoTest.setType(type);
-
 
         assertDoesNotThrow(() -> service.mapEventTemplateFunctionByType(eventTemplateDtoTest).apply(new EventTemplate()));
 
@@ -216,7 +198,6 @@ class EventTemplateServiceTest {
 
     @Test
     void mapEventTemplateFunctionByTypeWithIncorrectEventTemplateType() {
-
         EventTemplateDto eventTemplateDtoTest = createEventTemplateDtoTest();
         eventTemplateDtoTest.setType(null);
 
@@ -229,7 +210,6 @@ class EventTemplateServiceTest {
 
     @Test
     void deleteByIdSuccessful() {
-
         Mockito.when(repositoryMock.deleteByEventTemplateId(ID))
                 .thenReturn(1);
 
@@ -238,7 +218,6 @@ class EventTemplateServiceTest {
 
     @Test
     void deleteByIdWithMissingEntity() {
-
         Mockito.when(repositoryMock.deleteByEventTemplateId(ID))
                 .thenReturn(0);
 
@@ -250,7 +229,6 @@ class EventTemplateServiceTest {
 
 
     private EventTemplateDto createEventTemplateDtoTest() {
-
         return EventTemplateDto.builder()
                 .templateName("test")
                 .eventName("test")
@@ -262,7 +240,6 @@ class EventTemplateServiceTest {
     }
 
     private EventTemplate createEventTemplateTest() {
-
         return EventTemplate.builder()
                 .templateName("test")
                 .eventName("test")

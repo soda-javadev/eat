@@ -27,5 +27,4 @@ public interface EventTemplateRepository extends JpaRepository<EventTemplate, Lo
             """,
             nativeQuery = true)
     boolean isEventTemplateNameExists(String eventTemplateName);
-
 }
