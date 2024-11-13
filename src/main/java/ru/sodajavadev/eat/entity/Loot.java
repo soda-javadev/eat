@@ -19,7 +19,6 @@ import java.util.List;
 @Entity
 @Table(name = "loot", schema = "eat")
 public class Loot {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

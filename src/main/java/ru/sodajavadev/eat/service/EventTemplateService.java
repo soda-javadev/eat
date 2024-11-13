@@ -38,6 +38,9 @@ public class EventTemplateService {
     @Transactional
     public EventTemplateDto createEventTemplate(EventTemplateDto eventTemplateDto) {
 //        TODO добавить EventTemplateType - ONCE, создать метод для создания EventTemplate и Event сразу по этому типу
+        if (EventTemplateType.ONCE.equals(eventTemplateDto.getType())) {
+            throw new EventTemplateBaseException("Еще не реализован", TYPE);
+        }
 
         validateEventTemplateType(eventTemplateDto);
 
