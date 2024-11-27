@@ -39,5 +39,5 @@ public interface EventTemplateRepository extends JpaRepository<EventTemplate, Lo
                    (et.type = 'MONTHLY' AND et.dayOfMonth = :dayOfMonth))
               AND et.active IS TRUE
             """)
-    List<EventTemplate> findAll(Integer minute, Integer hour, DayOfWeek dayOfWeek, Integer dayOfMonth);
+    List<EventTemplate> findForCurrentTime(Integer minute, Integer hour, DayOfWeek dayOfWeek, Integer dayOfMonth);
 }

@@ -1,6 +1,14 @@
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:17.0:///postgres?currentSchema=eat
+    url: jdbc:tc:postgresql:17-alpine:///postgres?currentSchema=eat
+
     hikari:
       connection-init-sql: CREATE SCHEMA IF NOT EXISTS eat;
+
+  liquibase:
+    changeLog: classpath:db/changelog/changelog.xml
+    default-schema: eat
+
+scheduler:
+  event: 0 */1 * * * *

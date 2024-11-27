@@ -13,4 +13,7 @@ public interface EventMapper {
     @Mapping(target = "loot", ignore = true)
     @Mapping(target = "guildMembers", ignore = true)
     Event toEntity(EventDto event);
+
+    @Mapping(target = "eventTemplateId", source = "eventTemplate.id")
+    EventDto toDto(Event event);
 }
