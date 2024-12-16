@@ -10,5 +10,3 @@ spring:
     changeLog: classpath:db/changelog/changelog.xml
     default-schema: eat
 
-scheduler:
-  event: 0 */1 * * * *
