@@ -175,7 +175,7 @@ class EventTemplateServiceTest {
 
         assertEquals(INCORRECT_EVENT_TEMPLATE_ID, e.getMessage());
         assertEquals(FIELD_ID, e.getField());
-    }
+}
 
     @ParameterizedTest
     @CsvSource({

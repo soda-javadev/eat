@@ -2,7 +2,7 @@ spring:
   jpa:
     database: postgresql
     hibernate:
-     ddl-auto: validate
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
 
@@ -20,3 +20,5 @@ server:
   error:
     include-stacktrace: never
 
+scheduler:
+  event: 0 */1 * * * *
