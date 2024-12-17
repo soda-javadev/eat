@@ -1,5 +1,13 @@
 package ru.sodajavadev.eat.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sodajavadev.eat.dto.EventTemplateDto;
+import ru.sodajavadev.eat.exception.ErrorDto;
 import ru.sodajavadev.eat.service.EventTemplateService;
 
 import java.util.List;
@@ -22,6 +31,7 @@ import static ru.sodajavadev.eat.controller.EventTemplateController.UI_V_1_EVENT
 @RequiredArgsConstructor
 @RequestMapping(value = UI_V_1_EVENT_TEMPLATE)
 @RestController
+@Tag(name = "Контроллер для управления шаблонами событий")
 public class EventTemplateController {
 
     protected static final String UI_V_1_EVENT_TEMPLATE = "/ui/v1/event-template";
@@ -30,30 +40,68 @@ public class EventTemplateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Создание нового")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешно создан",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventTemplateDto.class))),
+            @ApiResponse(responseCode = "400", description = "Данные введены некорректно", content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = ErrorDto.class))))
+    })
     public EventTemplateDto createEventTemplate(@Valid @RequestBody EventTemplateDto eventTemplate) {
         return service.createEventTemplate(eventTemplate);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Поиск по id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешно найден",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventTemplateDto.class))),
+            @ApiResponse(responseCode = "400", description = "Переданный id не существует", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDto.class))),
+    })
     public EventTemplateDto findById(@RequestParam Long id) {
         return service.findById(id);
     }
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<EventTemplateDto> findAll(@RequestParam(required = false) Boolean onlyActive) {
+    @Operation(summary = "Поиск всех")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешно найдены",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventTemplateDto.class)))
+    })
+    public List<EventTemplateDto> findAll(@RequestParam(required = false) @Parameter(description = "False - возвращает все без фильтрации по статусу активен") Boolean onlyActive) {
         return service.findAll(onlyActive);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Для обновления")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешно обновлен",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventTemplateDto.class))),
+            @ApiResponse(responseCode = "400", description = "Не удалось обновить из-за некорректности введенных данных", content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = ErrorDto.class))))
+    })
     public EventTemplateDto updateEventTemplateDto(@Valid @RequestBody EventTemplateDto eventTemplateDto) {
         return service.updateEventTemplateDto(eventTemplateDto);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Для удаления по id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешно удален",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventTemplateDto.class))),
+            @ApiResponse(responseCode = "400", description = "С переданным id не существует", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDto.class)))
+    })
     public void deleteById(@RequestParam Long id) {
         service.deleteById(id);
     }

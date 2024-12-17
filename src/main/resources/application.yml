@@ -6,6 +6,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
 
+  application:
+    name: eat
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=eat
@@ -22,3 +25,5 @@ server:
 
 scheduler:
   event: 0 */1 * * * *
+springdoc:
+  packages-to-scan: ru.sodajavadev.eat
