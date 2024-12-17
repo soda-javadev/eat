@@ -6,10 +6,11 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Schema(description = "Ошибка")
 public class ErrorDto {
 
-    @Schema(description = "Название поля ошибки", example = "id")
+    @Schema(description = "Название поля", example = "id")
     private String field;
-    @Schema(description = "Текст произошедшей ошибки", example = "События с id - 1 не существует")
+    @Schema(description = "Текст ошибки", example = "События с id - 1 не существует")
     private String message;
 }

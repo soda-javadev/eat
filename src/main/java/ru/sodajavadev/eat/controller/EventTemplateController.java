@@ -1,6 +1,8 @@
 package ru.sodajavadev.eat.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sodajavadev.eat.dto.EventTemplateDto;
-import ru.sodajavadev.eat.exception.EventTemplateErrorDto;
+import ru.sodajavadev.eat.exception.ErrorDto;
 import ru.sodajavadev.eat.service.EventTemplateService;
 
 import java.util.List;
@@ -38,13 +40,13 @@ public class EventTemplateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Метод для создания нового шаблона событий", description = "Позволяет создать новый шаблон события")
+    @Operation(summary = "Создание нового")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Шаблон события успешно создан",
+            @ApiResponse(responseCode = "200", description = "Успешно создан",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = EventTemplateDto.class))),
             @ApiResponse(responseCode = "400", description = "Данные введены некорректно", content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = EventTemplateErrorDto.class)))
+                    array = @ArraySchema(schema = @Schema(implementation = ErrorDto.class))))
     })
     public EventTemplateDto createEventTemplate(@Valid @RequestBody EventTemplateDto eventTemplate) {
         return service.createEventTemplate(eventTemplate);
@@ -52,13 +54,13 @@ public class EventTemplateController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Метод для поиска шаблона события по id", description = "Позволяет найти нужный шаблон события по id")
+    @Operation(summary = "Поиск по id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Шаблон события успешно найден",
+            @ApiResponse(responseCode = "200", description = "Успешно найден",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = EventTemplateDto.class))),
-            @ApiResponse(responseCode = "400", description = "Шаблона события с введенным id не существует", content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = EventTemplateErrorDto.class))),
+            @ApiResponse(responseCode = "400", description = "Переданный id не существует", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDto.class))),
     })
     public EventTemplateDto findById(@RequestParam Long id) {
         return service.findById(id);
@@ -66,25 +68,25 @@ public class EventTemplateController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Метод для поиска всех шаблонов событий в зависимости от переданного параметра", description = "Позволяет найти все нужные события")
+    @Operation(summary = "Поиск всех")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "События успешно найдены",
+            @ApiResponse(responseCode = "200", description = "Успешно найдены",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventTemplateDto.class))),
+                            schema = @Schema(implementation = EventTemplateDto.class)))
     })
-    public List<EventTemplateDto> findAll(@RequestParam(required = false) Boolean onlyActive) {
+    public List<EventTemplateDto> findAll(@RequestParam(required = false) @Parameter(description = "False - возвращает все без фильтрации по статусу активен") Boolean onlyActive) {
         return service.findAll(onlyActive);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Метод для обновления шаблона события", description = "Позволяет обновить нужный шаблон события")
+    @Operation(summary = "Для обновления")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Шаблон события успешно обновлен",
+            @ApiResponse(responseCode = "200", description = "Успешно обновлен",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = EventTemplateDto.class))),
-            @ApiResponse(responseCode = "400", description = "Шаблон события не удалось обновить из-за некорректности введенных данных", content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = EventTemplateErrorDto.class)))
+            @ApiResponse(responseCode = "400", description = "Не удалось обновить из-за некорректности введенных данных", content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = ErrorDto.class))))
     })
     public EventTemplateDto updateEventTemplateDto(@Valid @RequestBody EventTemplateDto eventTemplateDto) {
         return service.updateEventTemplateDto(eventTemplateDto);
@@ -92,13 +94,13 @@ public class EventTemplateController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Метод для удаления шаблона события по id", description = "Позволяет удалить нужный шаблон события по id")
+    @Operation(summary = "Для удаления по id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Шаблон события успешно удален",
+            @ApiResponse(responseCode = "200", description = "Успешно удален",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = EventTemplateDto.class))),
-            @ApiResponse(responseCode = "400", description = "Шаблон события с введенным id не существует", content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = EventTemplateErrorDto.class)))
+            @ApiResponse(responseCode = "400", description = "С переданным id не существует", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDto.class)))
     })
     public void deleteById(@RequestParam Long id) {
         service.deleteById(id);

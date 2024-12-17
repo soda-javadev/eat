@@ -11,6 +11,9 @@ import ru.sodajavadev.eat.repository.EventTemplateRepository;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
+/**
+ * Сервис для работы с event
+ */
 @Service
 @RequiredArgsConstructor
 public class EventService {
@@ -21,9 +24,7 @@ public class EventService {
     @Transactional
     public void processEvent(Integer minute, Integer hour, DayOfWeek dayOfWeek, Integer dayOfMonth) {
         var date = LocalDateTime.now();
-        eventTemplateRepository.findForCurrentTime(minute, hour, dayOfWeek, dayOfMonth).stream()
-                .map(t -> eventBuilder(t, date))
-                .forEach(eventRepository::save);
+        eventTemplateRepository.findForCurrentTime(minute, hour, dayOfWeek, dayOfMonth).stream().map(t -> eventBuilder(t, date)).forEach(eventRepository::save);
     }
 
     private static Event eventBuilder(EventTemplate eventTemplate, LocalDateTime date) {
