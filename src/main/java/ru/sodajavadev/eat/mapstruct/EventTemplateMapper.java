@@ -23,14 +23,19 @@ public interface EventTemplateMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dayOfWeek", expression = "java(null)")
-    @Mapping(target = "dayOfMonth",  expression = "java(null)")
+    @Mapping(target = "dayOfMonth", expression = "java(null)")
     EventTemplate mapToDaily(EventTemplateDto fromObject, @MappingTarget EventTemplate toObject);
 
-    @Mapping(target = "id",  ignore = true)
-    @Mapping(target = "dayOfMonth",  expression = "java(null)")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dayOfMonth", expression = "java(null)")
     EventTemplate mapToWeekly(EventTemplateDto fromObject, @MappingTarget EventTemplate toObject);
 
-    @Mapping(target = "id",  ignore = true)
-    @Mapping(target = "dayOfWeek",  expression = "java(null)")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dayOfWeek", expression = "java(null)")
     EventTemplate mapToMonthly(EventTemplateDto fromObject, @MappingTarget EventTemplate toObject);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dayOfWeek", expression = "java(null)")
+    @Mapping(target = "dayOfMonth", expression = "java(null)")
+    EventTemplate mapToOnce(EventTemplateDto fromObject, @MappingTarget EventTemplate toObject);
 }

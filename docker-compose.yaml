@@ -18,3 +18,13 @@ services:
       - ./sql/init:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:26.0.7
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8181:8080"
+    command: start-dev

@@ -33,20 +33,23 @@ public class EventTemplateService {
 
     private final EventTemplateRepository repository;
     private final EventTemplateMapper mapper;
+    private final EventService eventService;
+
 
     @SneakyThrows
     @Transactional
     public EventTemplateDto createEventTemplate(EventTemplateDto eventTemplateDto) {
-//        TODO добавить EventTemplateType - ONCE, создать метод для создания EventTemplate и Event сразу по этому типу
-        if (EventTemplateType.ONCE.equals(eventTemplateDto.getType())) {
-            throw new EventTemplateBaseException("Еще не реализован", TYPE);
-        }
-
+        validateEventTemplateName(eventTemplateDto);
         validateEventTemplateType(eventTemplateDto);
 
-        validateEventTemplateName(eventTemplateDto);
+        var eventTemplate = repository.save(mapEventTemplateFunctionByType(eventTemplateDto)
+                .apply(new EventTemplate()));
 
-        return mapper.toDto(repository.save(mapEventTemplateFunctionByType(eventTemplateDto).apply(new EventTemplate())));
+        if (EventTemplateType.ONCE.equals(eventTemplateDto.getType())) {
+            eventService.createOnceEvent(eventTemplate);
+        }
+
+        return mapper.toDto(eventTemplate);
     }
 
     @SneakyThrows
@@ -109,6 +112,8 @@ public class EventTemplateService {
             return eventTemplate -> mapper.mapToWeekly(eventTemplateDto, eventTemplate);
         } else if (EventTemplateType.MONTHLY == eventTemplateDto.getType()) {
             return eventTemplate -> mapper.mapToMonthly(eventTemplateDto, eventTemplate);
+        } else if (EventTemplateType.ONCE == eventTemplateDto.getType()) {
+            return eventTemplate -> mapper.mapToOnce(eventTemplateDto, eventTemplate);
         } else {
             throw new EventTemplateBaseException(format(INCORRECT_EVENT_TEMPLATE_TYPE, eventTemplateDto.getType()), TYPE);
         }

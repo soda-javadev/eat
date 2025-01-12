@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ public class EventTemplateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('GM') or hasRole('OFFICER')")
     @Operation(summary = "Создание нового")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешно создан",
@@ -54,6 +56,7 @@ public class EventTemplateController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('GM') or hasRole('OFFICER') or hasRole('MEMBER')")
     @Operation(summary = "Поиск по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешно найден",
@@ -68,6 +71,7 @@ public class EventTemplateController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('GM') or hasRole('OFFICER') or hasRole('MEMBER')")
     @Operation(summary = "Поиск всех")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешно найдены",
@@ -80,6 +84,7 @@ public class EventTemplateController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('GM') or hasRole('OFFICER')")
     @Operation(summary = "Для обновления")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешно обновлен",
@@ -94,6 +99,7 @@ public class EventTemplateController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('GM')")
     @Operation(summary = "Для удаления по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешно удален",
