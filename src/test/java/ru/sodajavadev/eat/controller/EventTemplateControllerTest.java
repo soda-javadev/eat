@@ -5,7 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +32,12 @@ import static ru.sodajavadev.eat.controller.EventTemplateController.UI_V_1_EVENT
 class EventTemplateControllerTest {
 
     private static final String URL_TEMPLATE_GET_ALL = UI_V_1_EVENT_TEMPLATE + "/all";
+
+    @MockBean
+    private JwtDecoder decoder;
+
+    @MockBean
+    private ClientRegistrationRepository registrationRepository;
 
     @Autowired
     private MockMvc mockMvc;

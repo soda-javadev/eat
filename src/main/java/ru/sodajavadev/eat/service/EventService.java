@@ -22,7 +22,7 @@ public class EventService {
 
     private final EventRepository repository;
     private final EventTemplateRepository eventTemplateRepository;
-    private final EventMapper mapper;
+    private final EventMapper eventMapper;
 
     @Transactional
     public void processEvent(Integer minute, Integer hour, DayOfWeek dayOfWeek, Integer dayOfMonth) {
@@ -35,7 +35,7 @@ public class EventService {
         var eventTime = LocalDateTime.now()
                 .withMinute(eventTemplate.getMinute())
                 .withHour(eventTemplate.getHour());
-        return mapper.toDto(repository.save(eventBuilder(eventTemplate, eventTime)));
+        return eventMapper.toDto(repository.save(eventBuilder(eventTemplate, eventTime)));
     }
 
     private static Event eventBuilder(EventTemplate eventTemplate, LocalDateTime date) {

@@ -8,6 +8,10 @@ services:
     build: .
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
+      - keycloak
+
   postgres:
     container_name: postgres
     image: postgres:17-alpine
@@ -22,9 +26,12 @@ services:
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:26.0.7
+    command:
+      "start-dev --bootstrap-admin-username tmpadm --bootstrap-admin-password pass --import-realm --verbose"
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    volumes:
+      - ./Keycloak/realms/export:/opt/keycloak/data/import
     ports:
       - "8181:8080"
-    command: start-dev

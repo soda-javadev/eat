@@ -10,7 +10,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8181/realms/eat-app
-#          jwk-set-uri: http://localhost:8181/realms/eat-app/protocol/openid-connect/certs
       client:
         provider:
           keycloak:
@@ -19,7 +18,7 @@ spring:
         registration:
           keycloak:
             client-id: eat-client
-            client-secret: Sn6QB5F09wSVgb5cksVdgJCW9YB4qNmu
+            client-secret: 0KS5BUAPVztJNMvb3EobvrBuRKqQebui
             scope:
               - openid
 
