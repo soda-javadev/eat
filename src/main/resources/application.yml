@@ -5,6 +5,22 @@ spring:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/realms/eat-app
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8181/realms/eat-app
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: eat-client
+            client-secret: 0KS5BUAPVztJNMvb3EobvrBuRKqQebui
+            scope:
+              - openid
 
   application:
     name: eat
@@ -14,6 +30,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=eat
     username: eat
     password: eat
+
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS eat;
 
   liquibase:
     changeLog: classpath:db/changelog/changelog.xml

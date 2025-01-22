@@ -32,38 +32,41 @@ public class EventTemplateService {
     protected static final String TYPE = "type";
 
     private final EventTemplateRepository repository;
-    private final EventTemplateMapper mapper;
+    private final EventTemplateMapper eventTemplateMapper;
+    private final EventService eventService;
+
 
     @SneakyThrows
     @Transactional
     public EventTemplateDto createEventTemplate(EventTemplateDto eventTemplateDto) {
-//        TODO добавить EventTemplateType - ONCE, создать метод для создания EventTemplate и Event сразу по этому типу
-        if (EventTemplateType.ONCE.equals(eventTemplateDto.getType())) {
-            throw new EventTemplateBaseException("Еще не реализован", TYPE);
-        }
-
+        validateEventTemplateName(eventTemplateDto);
         validateEventTemplateType(eventTemplateDto);
 
-        validateEventTemplateName(eventTemplateDto);
+        var eventTemplate = repository.save(mapEventTemplateFunctionByType(eventTemplateDto)
+                .apply(new EventTemplate()));
 
-        return mapper.toDto(repository.save(mapEventTemplateFunctionByType(eventTemplateDto).apply(new EventTemplate())));
+        if (EventTemplateType.ONCE.equals(eventTemplateDto.getType())) {
+            eventService.createOnceEvent(eventTemplate);
+        }
+
+        return eventTemplateMapper.toDto(eventTemplate);
     }
 
     @SneakyThrows
     @Transactional
     public EventTemplateDto findById(Long id) {
         return repository.findById(id)
-                .map(mapper::toDto)
+                .map(eventTemplateMapper::toDto)
                 .orElseThrow(() -> new EventTemplateBaseException(format(INCORRECT_EVENT_TEMPLATE_ID, id), ID));
     }
 
     @Transactional
     public List<EventTemplateDto> findAll(Boolean onlyActive) {
         if (onlyActive != null && !onlyActive) {
-            return mapper.toListDto(repository.findAll());
+            return eventTemplateMapper.toListDto(repository.findAll());
         }
 
-        return mapper.toListDto(repository.findAllByActiveIsTrue());
+        return eventTemplateMapper.toListDto(repository.findAllByActiveIsTrue());
     }
 
     @SneakyThrows
@@ -74,7 +77,7 @@ public class EventTemplateService {
         return repository.findById(eventTemplateDto.getId())
                 .map(mapEventTemplateFunctionByType(eventTemplateDto))
                 .map(repository::save)
-                .map(mapper::toDto)
+                .map(eventTemplateMapper::toDto)
                 .orElseThrow(() -> new EventTemplateBaseException(format(INCORRECT_EVENT_TEMPLATE_ID, eventTemplateDto.getId()), ID));
     }
 
@@ -104,11 +107,13 @@ public class EventTemplateService {
 
     protected Function<EventTemplate, EventTemplate> mapEventTemplateFunctionByType(EventTemplateDto eventTemplateDto) {
         if (EventTemplateType.DAILY == eventTemplateDto.getType()) {
-            return eventTemplate -> mapper.mapToDaily(eventTemplateDto, eventTemplate);
+            return eventTemplate -> eventTemplateMapper.mapToDaily(eventTemplateDto, eventTemplate);
         } else if (EventTemplateType.WEEKLY == eventTemplateDto.getType()) {
-            return eventTemplate -> mapper.mapToWeekly(eventTemplateDto, eventTemplate);
+            return eventTemplate -> eventTemplateMapper.mapToWeekly(eventTemplateDto, eventTemplate);
         } else if (EventTemplateType.MONTHLY == eventTemplateDto.getType()) {
-            return eventTemplate -> mapper.mapToMonthly(eventTemplateDto, eventTemplate);
+            return eventTemplate -> eventTemplateMapper.mapToMonthly(eventTemplateDto, eventTemplate);
+        } else if (EventTemplateType.ONCE == eventTemplateDto.getType()) {
+            return eventTemplate -> eventTemplateMapper.mapToOnce(eventTemplateDto, eventTemplate);
         } else {
             throw new EventTemplateBaseException(format(INCORRECT_EVENT_TEMPLATE_TYPE, eventTemplateDto.getType()), TYPE);
         }
