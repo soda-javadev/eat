@@ -30,6 +30,10 @@
             <column name="guild_member_id" type="bigint" remarks="guild_member_id mapping">
                 <constraints nullable="false" deleteCascade="true"/>
             </column>
+            <column name="is_presence" type="boolean" remarks="guild_member presence at the event">
+                <constraints nullable="false" deleteCascade="true"/>
+            </column>
+
         </createTable>
         <addForeignKeyConstraint baseTableName="mtm_event_guild_member"
                                  baseColumnNames="event_id"

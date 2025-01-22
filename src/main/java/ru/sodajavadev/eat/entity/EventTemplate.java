@@ -24,7 +24,6 @@ import java.time.DayOfWeek;
 @Entity
 @Table(name = "event_template", schema = "eat")
 public class EventTemplate {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

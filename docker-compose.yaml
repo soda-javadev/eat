@@ -32,6 +32,6 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
     volumes:
-      - ./Keycloak/realms/export:/opt/keycloak/data/import
+      - ./keycloak/realms/export:/opt/keycloak/data/import
     ports:
       - "8181:8080"
